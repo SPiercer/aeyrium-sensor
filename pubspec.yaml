@@ -1,6 +1,6 @@
 name: aeyrium_sensor
 description: A Flutter sensor plugin which provide easy access to the Pitch and Roll on Android and iOS devices.
-version: 1.0.7
+version: 1.1.0
 authors:
   - Aeyrium Inc. <diego@aeyrium.com>
   - Diego Velásquez <diego.velasquez.lopez@gmail.com>
