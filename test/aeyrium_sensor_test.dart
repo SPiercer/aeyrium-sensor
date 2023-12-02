@@ -6,7 +6,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   test('${AeyriumSensor.sensorEvents} are streamed', () async {
     const String channelName = 'plugins.aeyrium.com/sensor';
-    const List<double> sensorData = <double>[1.0, 2.0];
+    const List<double> sensorData = <double>[1.0, 2.0, 3.0];
 
     const StandardMethodCodec standardMethod = StandardMethodCodec();
     final TestDefaultBinaryMessenger messenger =
@@ -35,8 +35,9 @@ void main() {
     });
 
     final SensorEvent event = await AeyriumSensor.sensorEvents.first;
-    expect(event.pitch, 1.0);
-    expect(event.roll, 2.0);
+    expect(event.pitchX, 1.0);
+    expect(event.rollY, 2.0);
+    expect(event.azimuthZ, 3.0);
 
     await Future<Null>.delayed(Duration.zero);
     expect(isCanceled, isTrue);
