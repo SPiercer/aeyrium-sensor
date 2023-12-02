@@ -19,9 +19,8 @@ import android.content.Context;
 /** AeyriumSensorPlugin */
 public class AeyriumSensorPlugin implements FlutterPlugin, EventChannel.StreamHandler {
 
-  private static final String SENSOR_CHANNEL_NAME =
-          "plugins.aeyrium.com/sensor";
-  private static final int SENSOR_DELAY_MICROS = 1000 * 1000;//16 * 1000;
+  private static final String SENSOR_CHANNEL_NAME = "plugins.aeyrium.com/sensor";
+  private static final int SENSOR_DELAY_MICROS = 1000 * 1000;// 16 * 1000;
   private static MethodChannel channel;
   private WindowManager mWindowManager;
   private SensorEventListener sensorEventListener;
@@ -31,10 +30,9 @@ public class AeyriumSensorPlugin implements FlutterPlugin, EventChannel.StreamHa
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
-    final EventChannel sensorChannel =
-            new EventChannel(registrar.messenger(), SENSOR_CHANNEL_NAME);
+    final EventChannel sensorChannel = new EventChannel(registrar.messenger(), SENSOR_CHANNEL_NAME);
     sensorChannel.setStreamHandler(
-            new AeyriumSensorPlugin(registrar.context(), Sensor.TYPE_ROTATION_VECTOR, registrar));
+        new AeyriumSensorPlugin(registrar.context(), Sensor.TYPE_ROTATION_VECTOR, registrar));
 
   }
 
@@ -52,7 +50,7 @@ public class AeyriumSensorPlugin implements FlutterPlugin, EventChannel.StreamHa
 
   @Override
   public void onCancel(Object arguments) {
-    if (sensorManager != null && sensorEventListener != null){
+    if (sensorManager != null && sensorEventListener != null) {
       sensorManager.unregisterListener(sensorEventListener);
     }
   }
@@ -87,7 +85,7 @@ public class AeyriumSensorPlugin implements FlutterPlugin, EventChannel.StreamHa
       }
     };
   }
-  
+
   private void updateOrientation(float[] rotationVector, EventChannel.EventSink events) {
     float[] rotationMatrix = new float[9];
     SensorManager.getRotationMatrixFromVector(rotationMatrix, rotationVector);
@@ -117,20 +115,20 @@ public class AeyriumSensorPlugin implements FlutterPlugin, EventChannel.StreamHa
         break;
     }
 
-    
     float[] adjustedRotationMatrix = new float[9];
     SensorManager.remapCoordinateSystem(rotationMatrix, worldAxisForDeviceAxisX,
-            worldAxisForDeviceAxisY, adjustedRotationMatrix);
+        worldAxisForDeviceAxisY, adjustedRotationMatrix);
 
     // Transform rotation matrix into azimuth/pitch/roll
     float[] orientation = new float[3];
     SensorManager.getOrientation(adjustedRotationMatrix, orientation);
-
-    double pitch = - orientation[1];
-    double roll = - orientation[2];
-    double[] sensorValues = new double[2];
+    double azimuth = orientationData[0];
+    double pitch = -orientation[1];
+    double roll = -orientation[2];
+    double[] sensorValues = new double[3];
     sensorValues[0] = pitch;
     sensorValues[1] = roll;
+    sensorValues[2] = azimuth;
     events.success(sensorValues);
   }
 }
